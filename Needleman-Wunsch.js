@@ -1,12 +1,21 @@
+class MatrixEntry {
+    constructor(arrow, score) {
+      this.arrow = arrow;
+      this.score = score;
+    }
+  }
+
 const string1 = "AGTACGCA";
 const string2 = "TATGC";
 const string3 = "AAAAAAAAAAAGGGGGGAAAAAA";
 const string4 = "AAAAAAAGGGAGGAAAAAA";
 const database = [string1,string3,string4];
 console.log(Align(string1,string2));
-console.log(Align(string3,string4));
-console.log(compareDatabase(string2,database));
-console.log(compareDatabase(string3,database));
+//console.log(Align(string3,string4));
+//console.log(compareDatabase(string2,database));
+//console.log(compareDatabase(string3,database));
+
+
 
 
 function compareDatabase(string, database) {
@@ -18,7 +27,6 @@ function compareDatabase(string, database) {
 return result;
 }
 
-
 function Align(str1,str2) {
     var matrix = [];
     var gap = -1;
@@ -28,6 +36,7 @@ function Align(str1,str2) {
     var m = str1.length;
     var n = str2.length;
     var max = Math.max(m,n);
+
     for (i=0;i<=max;i++) {
         matrix[i] = [];
         for (j=0;j<=max;j++) {
@@ -44,7 +53,7 @@ function Align(str1,str2) {
     for (i=1;i<=m;i++) {
         for (j=1;j<=n;j++) {
         if (str1[i-1] == str2[j-1]) {
-            matrix[i][j] = matrix[i-1][j-1] + match; // en af de andre tre værdier kan godt være større
+            matrix[i][j] = new MatrixEntry("up left", matrix[i-1][j-1] + match);
         } else {
             matrix[i][j] = Math.max(matrix[i-1][j-1] + mismatch,
                                     matrix[i-1][j] + gap,
@@ -54,5 +63,5 @@ function Align(str1,str2) {
     }
     var alignment;
     // TODO beregn alignment ud fra "pile" i matrix
-    return [matrix[m][n], alignment];
+    return matrix[m][n];
 }
