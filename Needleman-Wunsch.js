@@ -44,7 +44,7 @@ function Align(str1,str2) {
     for (i=1;i<=m;i++) {
         for (j=1;j<=n;j++) {
         if (str1[i-1] == str2[j-1]) {
-            matrix[i][j] = matrix[i-1][j-1] + match;
+            matrix[i][j] = matrix[i-1][j-1] + match; // en af de andre tre værdier kan godt være større
         } else {
             matrix[i][j] = Math.max(matrix[i-1][j-1] + mismatch,
                                     matrix[i-1][j] + gap,
@@ -52,5 +52,7 @@ function Align(str1,str2) {
         }
         }
     }
-    return matrix[m][n];
+    var alignment;
+    // TODO beregn alignment ud fra "pile" i matrix
+    return [matrix[m][n], alignment];
 }
