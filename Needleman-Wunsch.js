@@ -9,15 +9,6 @@ console.log(compareDatabase(string2,database));
 console.log(compareDatabase(string3,database));
 
 
-class box {
-    constructor(value,direction) {
-        this.value = value;
-        this.direction = direction;
-    }
-}
-
-
-
 function compareDatabase(string, database) {
     let result = [];
     for (let i = 0; i < database.length; i++) {
@@ -37,7 +28,6 @@ function Align(str1,str2) {
     var m = str1.length;
     var n = str2.length;
     var max = Math.max(m,n);
-    var alignment = "";
     for (i=0;i<=max;i++) {
         matrix[i] = [];
         for (j=0;j<=max;j++) {
