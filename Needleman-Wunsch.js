@@ -1,3 +1,5 @@
+
+//opretter klassen MatrixEntry, som indeholder en pil og en score
 class MatrixEntry {
   constructor(arrow, score) {
     this.arrow = arrow;
@@ -13,6 +15,9 @@ const database = [string2, string3, string4];
 
 console.log(compareDatabase(string1, database));
 
+
+//sammenligner en enkelt streng med en database bestående af arrays
+//kalder Align funktionen for hver streng i databasen
 function compareDatabase(string, database) {
   let result = [];
   for (let i = 0; i < database.length; i++) {
@@ -105,7 +110,6 @@ function Align(str1, str2) {
 
   var alignment = [[], []];
 
-  // TODO beregn alignment ud fra "pile" i matrix
   i = m;
   j = n;
 
