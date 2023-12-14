@@ -29,25 +29,23 @@ function Align(str1, str2) {
   var i, j;
   var m = str1.length;
   var n = str2.length;
-  var min = n;
-  var max = m;
 
-  for (i = 0; i <= max; i++) {
+  for (i = 0; i <= m; i++) {
     matrix[i] = [];
-    for (j = 0; j <= min; j++) {
+    for (j = 0; j <= n; j++) {
       matrix[i][j] = new MatrixEntry("none", 0);
     }
   }
-  for (i = 0; i <= max; i++) {
+  for (i = 0; i <= m; i++) {
     matrix[i][0].score = i * gap;
     matrix[i][0].arrow = "up";
   }
-  for (j = 0; j <= min; j++) {
+  for (j = 0; j <= n; j++) {
     matrix[0][j].score = j * gap;
     matrix[0][j].arrow = "left";
   }
-  for (i = 1; i <= max; i++) {
-    for (j = 1; j < min + 1; j++) {
+  for (i = 1; i <= m; i++) {
+    for (j = 1; j < n + 1; j++) {
       if (str1[i - 1] === str2[j - 1]) {
         if (
           matrix[i - 1][j - 1].score + match >= matrix[i - 1][j].score + gap &&
