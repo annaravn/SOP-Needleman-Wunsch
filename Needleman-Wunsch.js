@@ -1,4 +1,6 @@
-
+import "./ladybug.js";
+import "./egen_mariehøne.js";
+import "./gebleri.js";
 //opretter klassen MatrixEntry, som indeholder en pil og en score
 class MatrixEntry {
   constructor(arrow, score) {
@@ -6,17 +8,15 @@ class MatrixEntry {
     this.score = score;
   }
 }
-
 const string1 = "AGTACGCA";
 const string2 = "TATGC";
-const string3 = "AAAAAAAAAAAGGGGGGAAAAAA";
-const string4 = "AAAAAAAGGGAGGAAAAAA";
-const database = [string2, string3, string4];
+const database = [ladybug, gebleri];
 
-console.log(compareDatabase(string1, database));
+console.log(compareDatabase(egenmariehøne, database));
 
+//console.log(compareDatabase(string1, database));
 
-//sammenligner en enkelt streng med en database bestående af arrays
+//sammenligner en enkelt streng med en database bestående af et array af strenge
 //kalder Align funktionen for hver streng i databasen
 function compareDatabase(string, database) {
   let result = [];
@@ -24,6 +24,17 @@ function compareDatabase(string, database) {
     result.push(Align(string, database[i]));
   }
   return result;
+}
+
+console.log(testAlign());
+
+function testAlign() {
+  let result = Align("AGC", "AC");
+  if (result[0] === 1 && result[1] === "AGC" && result[2] === "A-C") {
+    return "test Align() passed";
+  } else {
+    return [result[0], result[1], result[2], ["test Align() failed"]];
+  }
 }
 
 function Align(str1, str2) {
@@ -39,12 +50,11 @@ function Align(str1, str2) {
 
   //et tomt matrix oprettes ved hjælp af et array bestående af arrays
   for (i = 0; i <= m; i++) {
-    matrix[i] = [];
+    matrix.push([]);
     for (j = 0; j <= n; j++) {
-      matrix[i][j] = new MatrixEntry("none", 0);
+      matrix[i].push(new MatrixEntry("none", 0));
     }
   }
-
   //den første række og den første kolonne udfyldes med "point" for gap
 
   for (i = 0; i <= m; i++) {
@@ -55,53 +65,36 @@ function Align(str1, str2) {
     matrix[0][j].score = j * gap;
     matrix[0][j].arrow = "left";
   }
-
   //resten af matricen udfyldes ved hjælp af de eksisterende værdier,
   // og der angives "pile", i de retninger, der giver det største antal point
 
   for (i = 1; i <= m; i++) {
-    for (j = 1; j < n + 1; j++) {
+    for (j = 1; j <= n; j++) {
+      var diagonalMatch = matrix[i - 1][j - 1].score + match;
+      var diagonalMismatch = matrix[i - 1][j - 1].score + mismatch;
+      var up = matrix[i - 1][j].score + gap;
+      var left = matrix[i][j - 1].score + gap;
+
       if (str1[i - 1] === str2[j - 1]) {
-        if (
-          matrix[i - 1][j - 1].score + match >= matrix[i - 1][j].score + gap &&
-          matrix[i - 1][j - 1].score + match >= matrix[i][j - 1].score + gap
-        ) {
-          matrix[i][j].score = matrix[i - 1][j - 1].score + match;
+        if (diagonalMatch >= up && diagonalMatch >= left) {
+          matrix[i][j].score = diagonalMatch;
           matrix[i][j].arrow = "diagonal";
-        } else if (
-          matrix[i - 1][j].score + gap > matrix[i - 1][j - 1].score + match &&
-          matrix[i - 1][j].score + gap > matrix[i][j - 1].score + gap
-        ) {
-          matrix[i][j].score = matrix[i - 1][j].score + gap;
+        } else if (up >= diagonalMatch && up >= left) {
+          matrix[i][j].score = up;
           matrix[i][j].arrow = "up";
-        } else if (
-          matrix[i][j - 1].score + gap > matrix[i - 1][j - 1].score + match &&
-          matrix[i][j - 1].score + gap > matrix[i - 1][j].score + gap
-        ) {
-          matrix[i][j].score = matrix[i][j - 1].score + gap;
+        } else if (left >= diagonalMatch && left >= up) {
+          matrix[i][j].score = left;
           matrix[i][j].arrow = "left";
         }
       } else {
-        if (
-          matrix[i - 1][j - 1].score + mismatch >=
-            matrix[i - 1][j].score + gap &&
-          matrix[i - 1][j - 1].score + mismatch >= matrix[i][j - 1].score + gap
-        ) {
-          matrix[i][j].score = matrix[i - 1][j - 1].score + mismatch;
+        if (diagonalMismatch >= up && diagonalMismatch >= left) {
+          matrix[i][j].score = diagonalMismatch;
           matrix[i][j].arrow = "diagonal";
-        } else if (
-          matrix[i - 1][j].score + gap >
-            matrix[i - 1][j - 1].score + mismatch &&
-          matrix[i - 1][j].score + gap > matrix[i][j - 1].score + gap
-        ) {
-          matrix[i][j].score = matrix[i - 1][j].score + gap;
+        } else if (up >= diagonalMismatch && up >= left) {
+          matrix[i][j].score = up;
           matrix[i][j].arrow = "up";
-        } else if (
-          matrix[i][j - 1].score + gap >
-            matrix[i - 1][j - 1].score + mismatch &&
-          matrix[i][j - 1].score + gap > matrix[i - 1][j].score + gap
-        ) {
-          matrix[i][j].score = matrix[i][j - 1].score + gap;
+        } else if (left >= diagonalMismatch && left >= up) {
+          matrix[i][j].score = left;
           matrix[i][j].arrow = "left";
         }
       }
@@ -130,12 +123,18 @@ function Align(str1, str2) {
       alignment[0].push(str1[i - 1]);
       alignment[1].push("-");
       i--;
+    } else {
+      console.log("hovsa");
     }
   }
 
   //funktionen returnerer det endelige alignment og scoren
   // her bruges "join", som laver et string af arrayet
-  return [matrix[m][n].score, alignment[0].join(""), alignment[1].join("")];
+  return [
+    matrix[m][n].score,
+    alignment[0].reverse().join(""),
+    alignment[1].reverse().join(""),
+  ];
 }
 
 // AGC-G-CG

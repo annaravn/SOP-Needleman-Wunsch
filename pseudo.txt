@@ -1,0 +1,23 @@
+
+function nwRecursive(str1,str2,m,n) {
+
+var matchScore = 0;
+
+if str1[m] = str2[n]
+    matchScore = 1
+else
+    matchScore = -1
+
+result = max(nwRecursive(str1,str2,m-1,n-1) + matchScore,
+nwRecursive(str1,str2,m-1,n)+gap,
+nwRecursive(str1,str2,m,n-1)+gap)
+
+return result
+}
+
+// den samme funktion kører sig selv eksponentielt 
+
+
+
+
+
