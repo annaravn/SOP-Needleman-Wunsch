@@ -1,6 +1,8 @@
-import "./ladybug.js";
+import "./harlekin.js";
 import "./egen_mariehøne.js";
 import "./gebleri.js";
+import "./myg.js";
+import "./pallens.js";
 //opretter klassen MatrixEntry, som indeholder en pil og en score
 class MatrixEntry {
   constructor(arrow, score) {
@@ -8,20 +10,23 @@ class MatrixEntry {
     this.score = score;
   }
 }
+
+const database1 = [[harlekin,"harlekin"],[gebleri,"gebleri"],[myg,"myg"]];
+const database2 = [[pallens, "pallens"],[harlekin,"harlekin"],[gebleri,"gebleri"]];
+
 const string1 = "AGTACGCA";
 const string2 = "TATGC";
-const database = [ladybug, gebleri];
-
-console.log(compareDatabase(egenmariehøne, database));
-
-//console.log(compareDatabase(string1, database));
+console.log(Align(string1, string2));
+//console.log(compareDatabase(mariehøne, database1));
+//console.log(compareDatabase(myg, database2));
+//console.log(Align("AGGGCCAAATT",gebleri));
 
 //sammenligner en enkelt streng med en database bestående af et array af strenge
 //kalder Align funktionen for hver streng i databasen
 function compareDatabase(string, database) {
   let result = [];
   for (let i = 0; i < database.length; i++) {
-    result.push(Align(string, database[i]));
+    result.push([ database[i][1]],Align(string, database[i][0]));
   }
   return result;
 }
@@ -31,7 +36,7 @@ console.log(testAlign());
 function testAlign() {
   let result = Align("AGC", "AC");
   if (result[0] === 1 && result[1] === "AGC" && result[2] === "A-C") {
-    return "test Align() passed";
+    return [result[0], result[1], result[2], ["test Align() passed"]];
   } else {
     return [result[0], result[1], result[2], ["test Align() failed"]];
   }
@@ -131,7 +136,7 @@ function Align(str1, str2) {
   //funktionen returnerer det endelige alignment og scoren
   // her bruges "join", som laver et string af arrayet
   return [
-    matrix[m][n].score,
+   matrix[m][n].score,
     alignment[0].reverse().join(""),
     alignment[1].reverse().join(""),
   ];
